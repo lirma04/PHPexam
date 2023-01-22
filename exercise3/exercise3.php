@@ -44,7 +44,28 @@
        ],
    ];
 
-
-   function holidays_summary ($holidays) {
-
+   function summary_holidays(array $array): void
+   {
+       $options = [];
+       foreach ($array as $route) {
+           if (!isset($route['price'])) {
+               continue;
+           }
+           $destination = $route['destination'];
+           if (!isset($options[$destination])) {
+               $options[$destination] = [
+                   'destination' => $destination,
+                   'titles' => [],
+                   'total' => 0,
+               ];
+           }
+           $options[$destination]['titles'][] = $route['title'];
+           $options[$destination]['total'] += $route['price'] * $route['tourists'];
+       }
+       foreach ($options as $option) {
+           echo 'Destination: '.$option['destination'].PHP_EOL;
+           echo 'Titles: ' . implode(', ', $option['titles']).PHP_EOL;
+           echo 'Total cash: '.$option['total'].PHP_EOL.PHP_EOL;
+       }
    }
+   summary_holidays($holidays);
